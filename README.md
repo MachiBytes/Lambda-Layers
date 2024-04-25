@@ -1,41 +1,56 @@
-# Overview
-This is a script for creating lambda layers for AWS.
+This is a simplified version of creating a Lambda Layer. This works for Linux operating systems.
 
-### Prerequisites
+# Steps on using this repository
+1. Create a virtual environment
+    ```
+    python -m venv venv
 
-1. Docker
-2. Python 3.8
-
-### Instructions
-
-Note: A bash shell is encouraged but not required. Other shells may have different syntaxes for some of the steps listed down below.
-
-1. Create a virtual environment using the following code
+    # If you have uv installed
+    uv venv venv
+    ```
+2. Create a `requirements.txt` file containing all your dependencies
+3. Run the `runner.sh` file
    ```
-   python -m venv venv
+   ./runner.sh
    ```
+
+# Steps to recreate
+1. Create a virtual environment
+    ```
+    python -m venv venv
+    
+    # If you have uv installed
+    uv venv venv
+    ```
 2. Activate your virtual environment
    ```
-   // Windows
-   source venv/Scripts/activate
-
-   // Mac and Linux
    source venv/bin/activate
    ```
-3. Install your Python dependencies
+3. Install your required dependencies
    ```
-   // Example of installing Boto3
-   pip install boto3
-   ```
-4. Save all your dependencies onto a `requirements.txt` file.
-   ```
-   pip freeze > requirements.txt
-   ```
-5. Run the `runner.sh` script
-    ```
-    // Linux
-    ./runner.sh
-    ```
-    p.s. I don't know how this step works in Mac or Windows
+   pip install [dependencies]
 
-Just run ./runner.sh and you should be good to go
+   # If you have uv installed
+   uv pip install [dependencies]
+
+   # If you have a requirements.txt available
+   pip install -r requirements.txt
+
+   # If you have uv installed and a requirements.txt available
+   uv pip install -r requirements.txt
+   ```
+4. Create a `python` folder
+   ```
+   mkdir python
+   ```
+5. Copy the contents of your virtual environment to your new `python` folder
+   ```
+   cp -r venv/lib python/
+   ```
+6. Archive your `python` folder
+   ```
+   zip -r layer.zip python
+   ```
+   Notes: 
+   - If you don't have `zip`, you can search the internet on how to install it.
+   - The `layer.zip` file can be any name you wish. But the name of your folder must be `python` as this is the only name recognized by AWS Lambda Layers.

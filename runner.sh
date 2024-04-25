@@ -1,11 +1,17 @@
-#!/bin/bash
-container_name=lambda_docker
-docker_image=lambda_builder_image
-docker build . -t "$docker_image"
-docker run -td --name="$container_name" "$docker_image"
-docker cp ./requirements.txt "$container_name":/
+# Activate your virtual environment
+source venv/bin/activate
 
-docker exec -i "$container_name" //bin/bash < ./docker_install.sh
-docker cp "$container_name":/python.zip python.zip
-docker stop "$container_name"
-docker rm "$container_name"
+# Install your python dependencies
+pip install -r requirements.txt
+
+# Create a python folder
+mkdir python
+
+# Copy the contents fo your virtual environment to the python folder
+cp -r venv/lib python/
+
+# Archive the python folder into a zip file called layer.zip
+zip -r layer.zip python
+
+# Remove the python folder for cleanup
+rm -rf python
